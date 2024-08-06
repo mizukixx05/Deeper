@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Artist;
 
 class MusicController extends Controller
 {
@@ -11,26 +12,66 @@ class MusicController extends Controller
     
     public function index()
     {
-        return view('music.index');
+        $artists = Artist::all();
+        
+        return view('music.index', ['artists' => $artists]);
     }
-
-    //詳細画面
-
-    public function detail()
+    
+     public function show($id)
     {
-        return view('music.detail');
+    $artist = Artist::findOrFail($id);  // 指定されたIDのアーティストを取得
+    return view('music.show', ['artist' => $artist]);
     }
-    
-    //登録画面
-    
+
     public function create()
     {
-        return view('music.creat');
-    }  
-    //編集画面
-        
-    public function edit()
-    {
-        return view('music.edit');
+        return view('music.create');
     }
+
+    // 登録処理
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'url' => 'required|url',
+            'description' => 'nullable|string',
+        ]);
+
+        Artist::create($request->all());
+
+        return redirect()->route('music.index')->with('success', 'Artist created successfully.');
+    }
+
+    // 編集画面
+    public function edit($id)
+    {
+        $artist = Artist::findOrFail($id);
+        return view('music.edit', ['artist' => $artist]);
+    }
+
+    // 更新処理
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'url' => 'required|url',
+            'description' => 'nullable|string',
+        ]);
+
+        $artist = Artist::findOrFail($id);
+        $artist->update($request->all());
+
+        return redirect()->route('music.index')->with('success', 'Artist updated successfully.');
+    }
+
+    // 削除処理
+    public function destroy($id)
+    {
+        $artist = Artist::findOrFail($id);
+        $artist->delete();
+
+        return redirect()->route('music.index')->with('success', 'Artist deleted successfully.');
+    }
+
+    
 }
