@@ -16,13 +16,15 @@ class MusicController extends Controller
         
         return view('music.index', ['artists' => $artists]);
     }
-    
-     public function show($id)
+   
+    // 詳細画面
+    public function show($id)
     {
-    $artist = Artist::findOrFail($id);  // 指定されたIDのアーティストを取得
-    return view('music.show', ['artist' => $artist]);
+        $artist = Artist::findOrFail($id);
+        return view('music.show', ['artist' => $artist]);
     }
 
+    // 登録画面
     public function create()
     {
         return view('music.create');
@@ -38,7 +40,6 @@ class MusicController extends Controller
         ]);
 
         Artist::create($request->all());
-
         return redirect()->route('music.index')->with('success', 'Artist created successfully.');
     }
 
@@ -49,7 +50,7 @@ class MusicController extends Controller
         return view('music.edit', ['artist' => $artist]);
     }
 
-    // 更新処理
+    // 編集処理
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -60,7 +61,6 @@ class MusicController extends Controller
 
         $artist = Artist::findOrFail($id);
         $artist->update($request->all());
-
         return redirect()->route('music.index')->with('success', 'Artist updated successfully.');
     }
 
@@ -69,9 +69,6 @@ class MusicController extends Controller
     {
         $artist = Artist::findOrFail($id);
         $artist->delete();
-
         return redirect()->route('music.index')->with('success', 'Artist deleted successfully.');
     }
-
-    
 }

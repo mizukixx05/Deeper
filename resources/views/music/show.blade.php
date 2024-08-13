@@ -16,7 +16,7 @@
                 <p class="mt-2 text-gray-600">
                     {{ $artist->description }}
                 </p>
-                <a href="{{ route('music.edit', $artist->id) }}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Edit</a>ｓｓ
+                <a href="{{ route('music.edit', $artist->id) }}"></a>
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MusicController;
-
+use App\Http\Controllers\DeeperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,17 +26,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
     
-    Route::get('/music', [MusicController::class, 'index'])->name('music.index');
-    Route::get('/music/{id}', [MusicController::class, 'show'])->name('music.show');
     
-    Route::get('/music/create', [MusicController::class, 'create'])->name('music.create');
-    Route::post('/music', [MusicController::class, 'store'])->name('music.store');
+    Route::resource('music', MusicController::class);
+
+    Route::get('/deeper', [DeeperController::class, 'index'])->name('deeper');
+
     
-    Route::get('/music/{id}/edit', [MusicController::class, 'edit'])->name('music.edit');
-    Route::put('/music/{id}', [MusicController::class, 'update'])->name('music.update');
-    
-    Route::delete('/music/{id}', [MusicController::class, 'destroy'])->name('music.destroy');
- 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
